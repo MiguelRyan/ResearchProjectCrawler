@@ -4,6 +4,7 @@ import glob
 
 class ArticleCombiner:
     """Piece of code that can combine a bunch of csv's into one file"""
+
     def __init__(self, directory, output_file_name):
         # Move the directory up one to where the csv files are saved
         self.directory = directory
