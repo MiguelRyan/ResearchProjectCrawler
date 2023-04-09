@@ -1,3 +1,7 @@
-__pycache__/
-/spider/__pycache__/
-__init__.py
+researchProject/__pycache__/
+researchProject/spider/__pycache__/
+researchProject/__init__.py
+*.csv
+data/
+.Rproj.user/
+*.bak

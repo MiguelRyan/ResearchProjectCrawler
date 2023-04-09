@@ -6,7 +6,7 @@ class ArticleDivider:
     """Class that divides the main csv into multiple based on location"""
 
     def __init__(self, locations, file):
-        self.locations = locations
+        self.locations = [location.lower() for location in locations]
         self.file = file
 
         # Create a folder for our locations
@@ -19,15 +19,15 @@ class ArticleDivider:
 
             # Create a dictionary to store the articles for each keyword
             articles_by_location = {}
-            for location in locations:
+            for location in self.locations:
                 articles_by_location[location] = []
 
             # Iterate over each row in the CSV file
             for row in reader:
-                text = row['body']
+                text = row['body'].lower()
 
                 # Check if any of the locations are present in the text
-                for location in locations:
+                for location in self.locations:
                     if location in text:
                         articles_by_location[location].append(row)
 
