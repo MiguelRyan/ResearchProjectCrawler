@@ -1,7 +1,12 @@
 researchProject/__pycache__/
 researchProject/spider/__pycache__/
 researchProject/__init__.py
+/Twitter Data
+/News Article Data
+/data
+/Articles by location
 *.csv
 data/
 .Rproj.user/
 *.bak
+*.png

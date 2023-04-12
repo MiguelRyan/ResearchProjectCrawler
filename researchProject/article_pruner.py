@@ -15,7 +15,10 @@ class ArticlePruner:
         df = pd.read_csv(file)
 
         # filter the DataFrame to include only rows that contain at least one of the keywords
-        filtered_df = df[df['body'].str.contains('|'.join(keywords), na=False)]
+        try:
+            filtered_df = df[df['body'].str.contains('|'.join(keywords), na=False, case=False)]
+        except: # Really bad practice
+            filtered_df = df[df['text'].str.contains('|'.join(keywords), na=False, case=False)]
 
         self.number_of_articles = len(df)
         self.number_of_articles_after_pruning = len(filtered_df)

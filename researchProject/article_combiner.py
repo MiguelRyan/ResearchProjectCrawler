@@ -1,5 +1,6 @@
 import pandas as pd
 import glob
+import os
 
 
 class ArticleCombiner:
@@ -7,7 +8,7 @@ class ArticleCombiner:
 
     def __init__(self, directory, output_file_name):
         # Move the directory up one to where the csv files are saved
-        self.directory = directory
+        os.chdir(directory)
         self.output_file_name = output_file_name
 
         # Select all csv files

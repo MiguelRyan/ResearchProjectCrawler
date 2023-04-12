@@ -5,13 +5,15 @@ import os
 class ArticleDivider:
     """Class that divides the main csv into multiple based on location"""
 
-    def __init__(self, locations, file):
+    def __init__(self, directory, locations, file, output_folder):
+        os.chdir(directory)
         self.locations = [location.lower() for location in locations]
         self.file = file
+        self.output_folder = str(output_folder)
 
         # Create a folder for our locations
-        if not os.path.exists('Articles by location'):
-            os.makedirs('Articles by location')
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
 
         # Open the main csv file
         with open(f'{file}.csv', 'r', encoding="utf8") as csvfile:
@@ -24,7 +26,10 @@ class ArticleDivider:
 
             # Iterate over each row in the CSV file
             for row in reader:
-                text = row['body'].lower()
+                try:
+                    text = row['body'].lower()
+                except:     # really bad solution but will do for now
+                    text = row['text'].lower()
 
                 # Check if any of the locations are present in the text
                 for location in self.locations:
@@ -34,7 +39,7 @@ class ArticleDivider:
             # Save the articles for each location to separate CSV files if the articles exist
             for keyword, articles in articles_by_location.items():
                 if articles:
-                    output_file = os.path.join('Articles by location', f'{keyword}_articles.csv')
+                    output_file = os.path.join(output_folder, f'{keyword}_articles.csv')
                     with open(output_file, 'w', newline='', encoding="utf8") as csvfile:
                         writer = csv.DictWriter(csvfile, fieldnames=reader.fieldnames)
                         writer.writeheader()
