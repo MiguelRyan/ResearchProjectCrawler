@@ -7,10 +7,11 @@ os.chdir('..')
 class ArticlePruner:
     """Removes all articles from a csv file that do not contain keywords"""
 
-    def __init__(self, keywords, file):
+    def __init__(self, directory, keywords, file):
+        os.chdir(directory)
         self.keywords = keywords
         self.file = file
-
+        
         # read the CSV file into a DataFrame
         df = pd.read_csv(file)
 

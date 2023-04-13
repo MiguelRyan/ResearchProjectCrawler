@@ -2,30 +2,40 @@ library(ggplot2)
 library(dplyr)
 
 # data wranglings
-data <- read.csv("data/Ratios.csv")
+newsarticles <- read.csv("News Article Data/Ratios.csv")
+twitterdata <- read.csv("Twitter Data/Ratios.csv")
+
 hpindex <- read.csv("data/Dublin Location Indexes.csv")
-working_data <- merge(data, hpindex)[,c(-2, -3)]
+
+newsarticles <- merge(newsarticles, hpindex)
+twitterdata <- merge(twitterdata, hpindex)
+
 
 # creates linear regression plot
-ggplot(working_data, aes(Index, Ratio))+
-  labs(title="Linear Regression", x="HP Index", y="Article Ratios")+
+ggplot(newsarticles, aes(Index, Ratio))+
+  labs(title="Linear Regression of data from news articles", x="HP Index", y="Article Ratios")+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
   theme_classic()
 
-remove_extremes <- working_data %>%
-  filter(Ratio != 1) %>%
-  filter(Ratio != 0)
 
-ggplot(remove_extremes, aes(Index, Ratio))+
-  labs(title="Linear Regression", x="HP Index", y="Article Ratios")+
+ggplot(twitterdata, aes(Index, Ratio))+
+  labs(title="Linear Regression of twitter data", x="HP Index", y="Article Ratios")+
   geom_point()+
   geom_smooth(method="lm", se=FALSE)+
   theme_classic()
+
+# Removes any cases with less than 10 occurences
+twitterdata <- twitterdata %>%
+  filter(Total.number.of.articles >= 10) 
+
+newsarticles <- newsarticles %>%
+  filter(Total.number.of.articles >= 10) 
+
 
 # linear regression so we can get coefficients and slope
-LinearRegression1 <- lm(formula = Index ~ Ratio, data = working_data)
-LinearRegression2 <- lm(formula = Index ~ Ratio, data = remove_extremes)
+LinearRegression1 <- lm(formula = Index ~ Ratio, data = newsarticles)
+LinearRegression2 <- lm(formula = Index ~ Ratio, data = twitterdata)
 summary(LinearRegression1)
 summary(LinearRegression2)
 LinearRegression1

@@ -30,9 +30,9 @@ working_directory = os.getcwd()
 
 # Change these values to run respective parts of the code.
 NEWS_DATA_WRANGLER = False
-NEWS_CREATE_RATIOCSV = False
+NEWS_CREATE_RATIOCSV = True
 TWITTER_DATA_WRANGLER = False
-TWITTER_CREATE_RATIOCSV = True
+TWITTER_CREATE_RATIOCSV = False
 
 if NEWS_DATA_WRANGLER:
     directory = os.path.join(working_directory, "News Article Data")
@@ -42,18 +42,17 @@ if NEWS_DATA_WRANGLER:
     ArticleDivider(directory, dublin_locations, filename, "Articles by location")
 
 if NEWS_CREATE_RATIOCSV:
-    os.chdir("Articles by location")
-    output_dir = os.path.abspath(os.path.join(os.getcwd(), "..", "data"))
+    directory = os.path.join(working_directory, "News Article Data")
+    article_directory = os.path.join(directory, "Articles by location")
     output_file = 'Ratios.csv'
 
-    with open(os.path.join(output_dir, output_file), mode='w', newline='') as output_csv:
+    with open(os.path.join(directory, output_file), mode='w', newline='') as output_csv:
         writer = csv.writer(output_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
         writer.writerow(["Location", "Number of articles contained keywords", "Total number of articles", "Ratio"])
 
         # Write data to the output file
-        for file in os.listdir(os.getcwd()):
-            ap = ArticlePruner(keywords, file)
+        for file in os.listdir(article_directory):
+            ap = ArticlePruner(article_directory, keywords, file)
             row = [file[:-13].upper(), ap.number_of_articles_after_pruning, ap.number_of_articles, ap.number_of_articles_after_pruning / ap.number_of_articles]
             writer.writerow(row)
 
